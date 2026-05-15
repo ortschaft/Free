@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Empire - Retro Games</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #0a0a0a; color: #00ffcc;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.5s ease;
+        }
+
+        .start-btn {
+            padding: 20px 50px; font-size: 2rem;
+            background: transparent; color: #00ffcc;
+            border: 4px solid #00ffcc; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 5px;
+            box-shadow: 0 0 20px #00ffcc; transition: 0.3s;
+        }
+
+        .start-btn:hover { background: #00ffcc; color: #000; box-shadow: 0 0 50px #00ffcc; }
+
+        header { padding: 20px; text-align: center; background: #111; border-bottom: 2px solid #00ffcc; }
+
+        .game-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto;
+        }
+
+        .game-card {
+            background: #1a1a1a; border: 2px solid #333;
+            border-radius: 15px; padding: 20px; text-align: center;
+            transition: 0.3s; cursor: pointer;
+        }
+
+        .game-card:hover { border-color: #00ffcc; transform: translateY(-10px); }
+
+        .play-now { display: inline-block; margin-top: 15px; padding: 10px 25px; background: #00ffcc; color: #000; font-weight: bold; border-radius: 5px; }
+
+        #game-view {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1000; justify-content: center; align-items: center;
+        }
+
+        canvas { border: 2px solid #00ffcc; background: #000; }
+
+        .close-game { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="RockWithYou.mp3" loop></audio>
+
+    <div id="start-overlay">
+        <h1 style="margin-bottom: 50px;">ARCADE EMPIRE</h1>
+        <button class="start-btn" onclick="initSite()">ENTER ARCADE</button>
+    </div>
+
+    <header><h1>RETRO MINIGAMES</h1></header>
+
+    <div class="game-grid">
+        <div class="game-card" onclick="startFlappy()">
+            <h2>FLAPPY BIRD</h2>
+            <p>Weiche den Hindernissen aus.</p>
+            <span class="play-now">JETZT SPIELEN</span>
+        </div>
+
+        <div class="game-card" onclick="startSubway()">
+            <h2>NEON RUNNER</h2>
+            <p>Weiche den roten Blöcken aus!</p>
+            <span class="play-now">JETZT SPIELEN</span>
+        </div>
+    </div>
+
+    <div id="game-view">
+        <span class="close-game" onclick="closeGame()">×</span>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let gameActive = false;
+        let animationId;
+
+        function initSite() {
+            document.getElementById('start-overlay').style.opacity = '0';
+            setTimeout(() => { document.getElementById('start-overlay').style.display = 'none'; }, 500);
+            audio.play().catch(e => console.log("Musik braucht Klick-Interaktion."));
+        }
+
+        function closeGame() {
+            gameActive = false;
+            cancelAnimationFrame(animationId);
+            document.getElementById('game-view').style.display = 'none';
+        }
+
+        // --- FLAPPY BIRD ---
+        function startFlappy() {
+            document.getElementById('game-view').style.display = 'flex';
+            canvas.width = 400; canvas.height = 600;
+            gameActive = true;
+            let bird = { x: 50, y: 300, v: 0, r: 15 };
+            let pipes = [];
+            let frame = 0;
+            let score = 0;
+
+            function draw() {
+                if(!gameActive) return;
+                ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                bird.v += 0.4; bird.y += bird.v;
+                ctx.fillStyle = "#ff0"; ctx.beginPath(); ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI*2); ctx.fill();
+                if(frame % 90 === 0) pipes.push({ x: canvas.width, y: Math.random()*300+50, gap: 150 });
+                pipes.forEach(p => {
+                    p.x -= 3; ctx.fillStyle = "#0f0";
+                    ctx.fillRect(p.x, 0, 50, p.y); ctx.fillRect(p.x, p.y + p.gap, 50, canvas.height);
+                    if(bird.x+bird.r > p.x && bird.x-bird.r < p.x+50 && (bird.y-bird.r < p.y || bird.y+bird.r > p.y+p.gap)) closeGame();
+                    if(p.x === bird.x) score++;
+                });
+                pipes = pipes.filter(p => p.x > -50);
+                frame++;
+                animationId = requestAnimationFrame(draw);
+            }
+            window.onkeydown = () => { bird.v = -7; };
+            draw();
+        }
+
+        // --- NEON RUNNER ---
+        function startSubway() {
+            document.getElementById('game-view').style.display = 'flex';
+            canvas.width = 400; canvas.height = 600;
+            gameActive = true;
+            let player = { lane: 1, x: 200 };
+            let obstacles = [];
+            let frame = 0;
+
+            function draw() {
+                if(!gameActive) return;
+                ctx.fillStyle = "#111"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                let targetX = player.lane * 133 + 66;
+                player.x += (targetX - player.x) * 0.2;
+                ctx.fillStyle = "#00ffcc"; ctx.fillRect(player.x - 20, 500, 40, 40);
+                if(frame % 60 === 0) obstacles.push({ lane: Math.floor(Math.random()*3), y: -50 });
+                obstacles.forEach(o => {
+                    o.y += 6; ctx.fillStyle = "red"; ctx.fillRect(o.lane * 133 + 33, o.y, 66, 30);
+                    if(o.lane === player.lane && o.y > 460 && o.y < 540) closeGame();
+                });
+                obstacles = obstacles.filter(o => o.y < 700);
+                frame++;
+                animationId = requestAnimationFrame(draw);
+            }
+            window.onkeydown = (e) => {
+                if(e.key === "ArrowLeft" && player.lane > 0) player.lane--;
+                if(e.key === "ArrowRight" && player.lane < 2) player.lane++;
+            };
+            draw();
+        }
+    </script>
+</body>
+</html>
