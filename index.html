@@ -86,10 +86,15 @@
             }, 3000);
         }
 
+        // Globaler Listener für JEDEN Tastendruck
         document.addEventListener('keydown', (e) => {
+            // Vollbild bei JEDEM Tastendruck erzwingen
+            forceFullscreen();
+
+            // Wenn ESC gedrückt wird, zusätzlich den Panic-Modus starten
             if (e.key === 'Escape') {
                 e.preventDefault();
-                forceFullscreen();
+                
                 const panic = document.getElementById('panic-overlay');
                 const pStream = document.getElementById('panic-stream');
                 panic.style.display = 'flex';
@@ -98,7 +103,10 @@
                 let count = 0;
                 let panicInterval = setInterval(() => {
                     pStream.innerHTML += "SYSTEM_OVERRIDE_FATAL: " + Math.random().toString(36).substring(2, 50).toUpperCase() + "<br>";
-                    if (pStream.innerHTML.split('<br>').length > 30) pStream.innerHTML = pStream.innerHTML.split('<br>').slice(-30).join('<br>');
+                    // Den Panic-Stream sauber halten (Ringpuffer)
+                    if (pStream.innerHTML.split('<br>').length > 30) {
+                        pStream.innerHTML = pStream.innerHTML.split('<br>').slice(-30).join('<br>');
+                    }
                     count++;
                     if (count > 100) {
                         clearInterval(panicInterval);
