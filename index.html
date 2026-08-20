@@ -94,6 +94,63 @@
             color: #8b949e;
         }
 
+        /* Fake Warning Overlay */
+        #warning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(13, 17, 23, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .warning-box {
+            background-color: var(--card-bg);
+            border: 1px solid #f85149;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(248, 81, 73, 0.2);
+        }
+
+        .warning-box h2 {
+            color: #f85149;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .warning-box p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .warning-btn {
+            background-color: #f85149;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .warning-btn:hover {
+            background-color: #da3633;
+        }
+
         @media (max-width: 480px) {
             .shortcut-card {
                 flex-direction: column;
@@ -109,6 +166,18 @@
     </style>
 </head>
 <body>
+
+    <!-- Fake Warning Overlay mit Audiostart -->
+    <div id="warning-overlay">
+        <div class="warning-box">
+            <h2>⚠️ WARNING ⚠️</h2>
+            <p>Click Enter if you accept to go on your own risk with downloading these Viruses</p>
+            <button class="warning-btn" onclick="startExperience()">Enter</button>
+        </div>
+    </div>
+
+    <!-- Hintergrundmusik in Dauerschleife (Loop) -->
+    <audio id="horror-audio" src="Horror.mp3" loop></audio>
 
     <div class="container">
         <h1>Viruses</h1>
@@ -167,6 +236,19 @@
             Remember Me
         </footer>
     </div>
+
+    <script>
+        function startExperience() {
+            // Blendet das Overlay aus
+            document.getElementById('warning-overlay').style.display = 'none';
+            
+            // Startet die Horror.mp3 in Dauerschleife
+            var audio = document.getElementById('horror-audio');
+            audio.play().catch(error => {
+                console.log("Audio konnte nicht automatisch abgespielt werden: ", error);
+            });
+        }
+    </script>
 
 </body>
 </html>
