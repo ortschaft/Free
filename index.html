@@ -3,252 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Broken Viruses</title>
+    <title>System Access</title>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-color: #c9d1d9;
-            --accent-color: #58a6ff;
-            --accent-hover: #1f6feb;
-            --border-color: #30363d;
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
+            --ui-border: #333;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-main);
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        h1 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
-        }
-
-        .shortcut-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .shortcut-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 15px 20px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .shortcut-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .shortcut-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #ffffff;
-        }
-
-        .shortcut-btn {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-        }
-
-        .shortcut-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #8b949e;
-        }
-
-        /* Fake Warning Overlay */
-        #warning-overlay {
+        /* Seriöses Overlay */
+        #entry-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(13, 17, 23, 0.95);
+            background-color: #000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            padding: 20px;
-            box-sizing: border-box;
         }
 
-        .warning-box {
-            background-color: var(--card-bg);
-            border: 1px solid #f85149;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 450px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(248, 81, 73, 0.2);
+        .terminal-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
-        .warning-box h2 {
-            color: #f85149;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-        }
-
-        .warning-box p {
-            color: var(--text-color);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 25px;
-        }
-
-        .warning-btn {
-            background-color: #f85149;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
+        .enter-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px 30px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
         }
 
-        .warning-btn:hover {
-            background-color: #da3633;
+        .enter-btn:hover {
+            border-color: #fff;
+            background-color: #111;
         }
 
-        @media (max-width: 480px) {
-            .shortcut-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            .shortcut-btn {
-                width: 100%;
-                text-align: center;
-                box-sizing: border-box;
-            }
+        /* Hauptinhalt */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            display: none; /* Erst nach Klick sichtbar */
         }
+
+        h1 { font-size: 1.2rem; font-weight: 300; border-bottom: 1px solid var(--ui-border); padding-bottom: 10px; margin-bottom: 20px; }
+
+        .item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; }
+        .item a { color: #666; text-decoration: none; transition: 0.3s; }
+        .item a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-    <!-- Fake Warning Overlay mit Audiostart -->
-    <div id="warning-overlay">
-        <div class="warning-box">
-            <h2>⚠️ WARNING ⚠️</h2>
-            <p>Click Enter if you accept to go on your own risk with downloading these Viruses</p>
-            <button class="warning-btn" onclick="startExperience()">Enter</button>
-        </div>
+    <audio id="bg-audio" src="Horror.mp3" loop></audio>
+
+    <div id="entry-overlay">
+        <div class="terminal-text">SESSION_REQUIRED // AUTHENTICATION_PENDING</div>
+        <button class="enter-btn" onclick="initSystem()">Initialize Access</button>
     </div>
 
-    <!-- Hintergrundmusik in Dauerschleife (Loop) -->
-    <audio id="horror-audio" src="Horror.mp3" loop></audio>
-
-    <div class="container">
-        <h1>Viruses</h1>
-        
+    <div class="container" id="main-content">
+        <h1>Internal Repository Access</h1>
         <div class="shortcut-list">
-            <!-- KeepMyPhoneSave -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">KeepMyPhoneSave</span>
-                <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-
-            <!-- HHS School fights -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">HHS School fights</span>
-                <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-
-            <!-- KSign -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">KSign</span>
-                <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-
-            <!-- Send this video to your friends -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">Send this video to your friends</span>
-                <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-            
-             <!-- obama v6.7 Unvertable(ithink) -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">obama v6.7 Unvertable(ithink)</span>
-                <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-            
-            <!-- Not A Virus V2 -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">Not A Virus V2</span>
-                <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-            
-            <!-- Shut Down -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">Shut Down</span>
-                <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa" class="shortcut-btn" target="_blank">Add</a>
-            </div>
-
-            <!-- PHIM TẮT HACK 4G⚡️ -->
-            <div class="shortcut-card">
-                <span class="shortcut-title">PHIM TẮT HACK 4G⚡️</span>
-                <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4" class="shortcut-btn" target="_blank">Add</a>
-            </div>
+            <div class="item"><span>KeepMyPhoneSave</span> <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0">LINK_OPEN</a></div>
+            <div class="item"><span>HHS School fights</span> <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8">LINK_OPEN</a></div>
+            <div class="item"><span>KSign</span> <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf">LINK_OPEN</a></div>
+            <div class="item"><span>Send this video</span> <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be">LINK_OPEN</a></div>
+            <div class="item"><span>obama v6.7</span> <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca">LINK_OPEN</a></div>
+            <div class="item"><span>Not A Virus V2</span> <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095">LINK_OPEN</a></div>
+            <div class="item"><span>Shut Down</span> <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa">LINK_OPEN</a></div>
+            <div class="item"><span>PHIM TẮT HACK 4G⚡️</span> <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4">LINK_OPEN</a></div>
         </div>
-
-        <footer>
-            Remember Me
-        </footer>
     </div>
 
     <script>
-        function startExperience() {
-            // Blendet das Overlay aus
-            document.getElementById('warning-overlay').style.display = 'none';
-            
-            // Startet die Horror.mp3 in Dauerschleife
-            var audio = document.getElementById('horror-audio');
-            audio.play().catch(error => {
-                console.log("Audio konnte nicht automatisch abgespielt werden: ", error);
-            });
+        function initSystem() {
+            // Vollbildmodus
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) elem.requestFullscreen();
+
+            // Overlay ausblenden, Inhalt zeigen
+            document.getElementById('entry-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+
+            // Audio starten
+            document.getElementById('bg-audio').play();
         }
     </script>
-
 </body>
 </html>
