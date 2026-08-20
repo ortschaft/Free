@@ -9,11 +9,11 @@
             --bg-color: #050505;
             --text-color: #e0e0e0;
             --ui-border: #333;
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --accent: #444;
         }
 
         body {
-            font-family: var(--font-main);
+            font-family: 'Courier New', Courier, monospace;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -21,15 +21,13 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* Seriöses Overlay */
+        /* Overlay für den Initialisierungsprozess */
         #entry-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000;
             display: flex;
             flex-direction: column;
@@ -38,41 +36,31 @@
             z-index: 9999;
         }
 
-        .terminal-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: #888;
+        #code-stream {
+            font-size: 0.7rem;
+            color: #00ff41; /* Klassisches Hacker-Grün */
+            width: 80%;
+            height: 200px;
+            overflow: hidden;
             margin-bottom: 20px;
-            letter-spacing: 1px;
+            text-align: left;
         }
 
         .enter-btn {
             background: transparent;
             color: #fff;
-            border: 1px solid #444;
+            border: 1px solid var(--accent);
             padding: 10px 30px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: all 0.3s;
-        }
-
-        .enter-btn:hover {
-            border-color: #fff;
-            background-color: #111;
         }
 
         /* Hauptinhalt */
-        .container {
-            width: 90%;
-            max-width: 500px;
-            display: none; /* Erst nach Klick sichtbar */
-        }
-
-        h1 { font-size: 1.2rem; font-weight: 300; border-bottom: 1px solid var(--ui-border); padding-bottom: 10px; margin-bottom: 20px; }
-
-        .item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; }
-        .item a { color: #666; text-decoration: none; transition: 0.3s; }
+        .container { width: 90%; max-width: 500px; display: none; }
+        h1 { font-size: 1rem; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
+        .item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #111; font-size: 0.85rem; }
+        .item a { color: #555; text-decoration: none; }
         .item a:hover { color: #fff; }
     </style>
 </head>
@@ -81,36 +69,46 @@
     <audio id="bg-audio" src="Horror.mp3" loop></audio>
 
     <div id="entry-overlay">
-        <div class="terminal-text">SESSION_REQUIRED // AUTHENTICATION_PENDING</div>
-        <button class="enter-btn" onclick="initSystem()">Initialize Access</button>
+        <div id="code-stream"></div>
+        <button class="enter-btn" id="start-btn" onclick="initSystem()">Initialize Access</button>
     </div>
 
     <div class="container" id="main-content">
         <h1>Internal Repository Access</h1>
         <div class="shortcut-list">
-            <div class="item"><span>KeepMyPhoneSave</span> <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0">LINK_OPEN</a></div>
-            <div class="item"><span>HHS School fights</span> <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8">LINK_OPEN</a></div>
-            <div class="item"><span>KSign</span> <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf">LINK_OPEN</a></div>
-            <div class="item"><span>Send this video</span> <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be">LINK_OPEN</a></div>
-            <div class="item"><span>obama v6.7</span> <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca">LINK_OPEN</a></div>
-            <div class="item"><span>Not A Virus V2</span> <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095">LINK_OPEN</a></div>
-            <div class="item"><span>Shut Down</span> <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa">LINK_OPEN</a></div>
-            <div class="item"><span>PHIM TẮT HACK 4G⚡️</span> <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4">LINK_OPEN</a></div>
+            <div class="item"><span>KeepMyPhoneSave</span> <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0">EXEC_OPEN</a></div>
+            <div class="item"><span>HHS School fights</span> <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8">EXEC_OPEN</a></div>
+            <div class="item"><span>KSign</span> <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf">EXEC_OPEN</a></div>
+            <div class="item"><span>Send this video</span> <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be">EXEC_OPEN</a></div>
+            <div class="item"><span>obama v6.7</span> <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca">EXEC_OPEN</a></div>
+            <div class="item"><span>Not A Virus V2</span> <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095">EXEC_OPEN</a></div>
+            <div class="item"><span>Shut Down</span> <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa">EXEC_OPEN</a></div>
+            <div class="item"><span>PHIM TẮT HACK 4G⚡️</span> <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4">EXEC_OPEN</a></div>
         </div>
     </div>
 
     <script>
         function initSystem() {
-            // Vollbildmodus
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) elem.requestFullscreen();
+            document.getElementById('start-btn').style.display = 'none';
+            const stream = document.getElementById('code-stream');
+            
+            // "Berechnung" starten
+            let interval = setInterval(() => {
+                stream.innerHTML += "CALCULATING_HASH: " + Math.random().toString(36).substring(2, 15) + "<br>";
+                stream.scrollTop = stream.scrollHeight;
+            }, 50);
 
-            // Overlay ausblenden, Inhalt zeigen
-            document.getElementById('entry-overlay').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-
-            // Audio starten
-            document.getElementById('bg-audio').play();
+            // Nach 3 Sekunden alles umschalten
+            setTimeout(() => {
+                clearInterval(interval);
+                // Vollbild
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) elem.requestFullscreen();
+                
+                document.getElementById('entry-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('bg-audio').play();
+            }, 3000);
         }
     </script>
 </body>
