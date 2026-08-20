@@ -5,63 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Access</title>
     <style>
-        :root {
-            --bg-color: #050505;
-            --text-color: #e0e0e0;
-            --ui-border: #333;
-            --accent: #444;
-        }
+        :root { --bg-color: #050505; --text-color: #e0e0e0; --accent: #444; }
+        body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-color); color: var(--text-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
 
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+        #entry-overlay, #panic-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        
+        #code-stream, #panic-stream { font-size: 0.7rem; color: #00ff41; width: 80%; height: 200px; overflow: hidden; margin-bottom: 20px; text-align: left; }
+        #panic-stream { width: 100%; height: 100%; font-size: 0.9rem; padding: 20px; box-sizing: border-box; }
 
-        /* Overlay für den Initialisierungsprozess */
-        #entry-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        #code-stream {
-            font-size: 0.7rem;
-            color: #00ff41; /* Klassisches Hacker-Grün */
-            width: 80%;
-            height: 200px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .enter-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid var(--accent);
-            padding: 10px 30px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Hauptinhalt */
+        .enter-btn { background: transparent; color: #fff; border: 1px solid var(--accent); padding: 10px 30px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
         .container { width: 90%; max-width: 500px; display: none; }
         h1 { font-size: 1rem; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
         .item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #111; font-size: 0.85rem; }
         .item a { color: #555; text-decoration: none; }
         .item a:hover { color: #fff; }
+        #panic-overlay { display: none; }
     </style>
 </head>
 <body>
@@ -73,43 +31,57 @@
         <button class="enter-btn" id="start-btn" onclick="initSystem()">Initialize Access</button>
     </div>
 
+    <div id="panic-overlay">
+        <div id="panic-stream"></div>
+    </div>
+
     <div class="container" id="main-content">
         <h1>Internal Repository Access</h1>
         <div class="shortcut-list">
-            <div class="item"><span>KeepMyPhoneSave</span> <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0">EXEC_OPEN</a></div>
-            <div class="item"><span>HHS School fights</span> <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8">EXEC_OPEN</a></div>
-            <div class="item"><span>KSign</span> <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf">EXEC_OPEN</a></div>
-            <div class="item"><span>Send this video</span> <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be">EXEC_OPEN</a></div>
-            <div class="item"><span>obama v6.7</span> <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca">EXEC_OPEN</a></div>
-            <div class="item"><span>Not A Virus V2</span> <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095">EXEC_OPEN</a></div>
-            <div class="item"><span>Shut Down</span> <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa">EXEC_OPEN</a></div>
-            <div class="item"><span>PHIM TẮT HACK 4G⚡️</span> <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4">EXEC_OPEN</a></div>
+            <div class="item"><span>KeepMyPhoneSave</span> <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>HHS School fights</span> <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>KSign</span> <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>Send this video</span> <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>obama v6.7</span> <a href="https://www.icloud.com/shortcuts/eef55b0992d34f00b16128c82e9dbbca" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>Not A Virus V2</span> <a href="https://www.icloud.com/shortcuts/9fc98b7115fb494eafde188e23aed095" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>Shut Down</span> <a href="https://www.icloud.com/shortcuts/7a5ef3c1c5ed4fefb54289bd48c084aa" target="_blank">EXEC_OPEN</a></div>
+            <div class="item"><span>PHIM TẮT HACK 4G⚡️</span> <a href="https://www.icloud.com/shortcuts/cab11f9120864b919e8f868e3c0216c4" target="_blank">EXEC_OPEN</a></div>
         </div>
     </div>
 
     <script>
+        const audio = document.getElementById('bg-audio');
+
         function initSystem() {
             document.getElementById('start-btn').style.display = 'none';
             const stream = document.getElementById('code-stream');
-            
-            // "Berechnung" starten
             let interval = setInterval(() => {
                 stream.innerHTML += "CALCULATING_HASH: " + Math.random().toString(36).substring(2, 15) + "<br>";
-                stream.scrollTop = stream.scrollHeight;
             }, 50);
 
-            // Nach 3 Sekunden alles umschalten
             setTimeout(() => {
                 clearInterval(interval);
-                // Vollbild
-                const elem = document.documentElement;
-                if (elem.requestFullscreen) elem.requestFullscreen();
-                
+                document.documentElement.requestFullscreen();
                 document.getElementById('entry-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                document.getElementById('bg-audio').play();
-            }, 3000);
+                audio.play();
+            }, 2000);
         }
+
+        // ESC-Taste abfangen
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                document.documentElement.requestFullscreen();
+                const panic = document.getElementById('panic-overlay');
+                panic.style.display = 'flex';
+                const pStream = document.getElementById('panic-stream');
+                
+                setInterval(() => {
+                    pStream.innerHTML += "CRITICAL_SYSTEM_OVERRIDE: " + Math.random().toString(36).substring(2, 50) + "<br>";
+                }, 20);
+            }
+        });
     </script>
 </body>
 </html>
