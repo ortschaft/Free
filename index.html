@@ -1,173 +1,148 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
+    <main_charset>UTF-8</main_charset>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade Empire - Retro Games</title>
+    <title>Meine Shortcuts</title>
     <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --accent-hover: #1f6feb;
+            --border-color: #30363d;
+        }
+
         body {
-            margin: 0; padding: 0;
-            background-color: #0a0a0a; color: #00ffcc;
-            font-family: 'Segoe UI', sans-serif;
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        /* Start Overlay */
-        #start-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s ease;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        .start-btn {
-            padding: 20px 50px; font-size: 2rem;
-            background: transparent; color: #00ffcc;
-            border: 4px solid #00ffcc; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 5px;
-            box-shadow: 0 0 20px #00ffcc; transition: 0.3s;
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
         }
 
-        .start-btn:hover { background: #00ffcc; color: #000; box-shadow: 0 0 50px #00ffcc; }
-
-        header { padding: 20px; text-align: center; background: #111; border-bottom: 2px solid #00ffcc; }
-
-        .game-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px; padding: 40px; max-width: 1200px; margin: 0 auto;
+        .shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .game-card {
-            background: #1a1a1a; border: 2px solid #333;
-            border-radius: 15px; padding: 20px; text-align: center;
-            transition: 0.3s; cursor: pointer;
+        .shortcut-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
-        .game-card:hover { border-color: #00ffcc; transform: translateY(-10px); }
-
-        .play-now { display: inline-block; margin-top: 15px; padding: 10px 25px; background: #00ffcc; color: #000; font-weight: bold; border-radius: 5px; }
-
-        #game-view {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 1000; justify-content: center; align-items: center;
+        .shortcut-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
         }
 
-        canvas { border: 2px solid #00ffcc; background: #000; }
+        .shortcut-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
 
-        .close-game { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
+        .shortcut-btn {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .shortcut-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #8b949e;
+        }
+
+        @media (max-width: 480px) {
+            .shortcut-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .shortcut-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" src="RockWithYou.mp3" loop></audio>
+    <div class="container">
+        <h1>Meine Shortcuts</h1>
+        
+        <div class="shortcut-list">
+            <!-- KeepMyPhoneSave -->
+            <div class="shortcut-card">
+                <span class="shortcut-title">KeepMyPhoneSave</span>
+                <a href="https://www.icloud.com/shortcuts/b5dc05843eb54ccca2a4cb9a77eedad0" class="shortcut-btn" target="_blank">Hinzufügen</a>
+            </div>
 
-    <div id="start-overlay">
-        <h1 style="margin-bottom: 50px;">ARCADE EMPIRE</h1>
-        <button class="start-btn" onclick="initSite()">ENTER ARCADE</button>
-    </div>
+            <!-- HHS School fights -->
+            <div class="shortcut-card">
+                <span class="shortcut-title">HHS School fights</span>
+                <a href="https://www.icloud.com/shortcuts/70e3ad6c3bac4c149203a6ab92943da8" class="shortcut-btn" target="_blank">Hinzufügen</a>
+            </div>
 
-    <header><h1>RETRO MINIGAMES</h1></header>
+            <!-- KSign -->
+            <div class="shortcut-card">
+                <span class="shortcut-title">KSign</span>
+                <a href="https://www.icloud.com/shortcuts/1b74f098f6ac4c59855732a7e84e02cf" class="shortcut-btn" target="_blank">Hinzufügen</a>
+            </div>
 
-    <div class="game-grid">
-        <div class="game-card" onclick="startFlappy()">
-            <h2>FLAPPY BIRD</h2>
-            <p>Weiche den Hindernissen aus.</p>
-            <span class="play-now">JETZT SPIELEN</span>
+            <!-- Send this video to your friends -->
+            <div class="shortcut-card">
+                <span class="shortcut-title">Send this video to your friends</span>
+                <a href="https://www.icloud.com/shortcuts/e73630cccc144290832794cbe20610be" class="shortcut-btn" target="_blank">Hinzufügen</a>
+            </div>
         </div>
 
-        <div class="game-card" onclick="startSubway()">
-            <h2>NEON RUNNER</h2>
-            <p>Weiche den roten Blöcken aus!</p>
-            <span class="play-now">JETZT SPIELEN</span>
-        </div>
+        <footer>
+            Erstellt mit GitHub Pages
+        </footer>
     </div>
 
-    <div id="game-view">
-        <span class="close-game" onclick="closeGame()">×</span>
-        <canvas id="gameCanvas"></canvas>
-    </div>
-
-    <script>
-        const audio = document.getElementById('bg-music');
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let gameActive = false;
-        let animationId;
-
-        function initSite() {
-            document.getElementById('start-overlay').style.opacity = '0';
-            setTimeout(() => { document.getElementById('start-overlay').style.display = 'none'; }, 500);
-            audio.play().catch(e => console.log("Musik braucht Klick-Interaktion."));
-        }
-
-        function closeGame() {
-            gameActive = false;
-            cancelAnimationFrame(animationId);
-            document.getElementById('game-view').style.display = 'none';
-        }
-
-        // --- FLAPPY BIRD ---
-        function startFlappy() {
-            document.getElementById('game-view').style.display = 'flex';
-            canvas.width = 400; canvas.height = 600;
-            gameActive = true;
-            let bird = { x: 50, y: 300, v: 0, r: 15 };
-            let pipes = [];
-            let frame = 0;
-            let score = 0;
-
-            function draw() {
-                if(!gameActive) return;
-                ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                bird.v += 0.4; bird.y += bird.v;
-                ctx.fillStyle = "#ff0"; ctx.beginPath(); ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI*2); ctx.fill();
-                if(frame % 90 === 0) pipes.push({ x: canvas.width, y: Math.random()*300+50, gap: 150 });
-                pipes.forEach(p => {
-                    p.x -= 3; ctx.fillStyle = "#0f0";
-                    ctx.fillRect(p.x, 0, 50, p.y); ctx.fillRect(p.x, p.y + p.gap, 50, canvas.height);
-                    if(bird.x+bird.r > p.x && bird.x-bird.r < p.x+50 && (bird.y-bird.r < p.y || bird.y+bird.r > p.y+p.gap)) closeGame();
-                    if(p.x === bird.x) score++;
-                });
-                pipes = pipes.filter(p => p.x > -50);
-                frame++;
-                animationId = requestAnimationFrame(draw);
-            }
-            window.onkeydown = () => { bird.v = -7; };
-            draw();
-        }
-
-        // --- NEON RUNNER ---
-        function startSubway() {
-            document.getElementById('game-view').style.display = 'flex';
-            canvas.width = 400; canvas.height = 600;
-            gameActive = true;
-            let player = { lane: 1, x: 200 };
-            let obstacles = [];
-            let frame = 0;
-
-            function draw() {
-                if(!gameActive) return;
-                ctx.fillStyle = "#111"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                let targetX = player.lane * 133 + 66;
-                player.x += (targetX - player.x) * 0.2;
-                ctx.fillStyle = "#00ffcc"; ctx.fillRect(player.x - 20, 500, 40, 40);
-                if(frame % 60 === 0) obstacles.push({ lane: Math.floor(Math.random()*3), y: -50 });
-                obstacles.forEach(o => {
-                    o.y += 6; ctx.fillStyle = "red"; ctx.fillRect(o.lane * 133 + 33, o.y, 66, 30);
-                    if(o.lane === player.lane && o.y > 460 && o.y < 540) closeGame();
-                });
-                obstacles = obstacles.filter(o => o.y < 700);
-                frame++;
-                animationId = requestAnimationFrame(draw);
-            }
-            window.onkeydown = (e) => {
-                if(e.key === "ArrowLeft" && player.lane > 0) player.lane--;
-                if(e.key === "ArrowRight" && player.lane < 2) player.lane++;
-            };
-            draw();
-        }
-    </script>
 </body>
 </html>
